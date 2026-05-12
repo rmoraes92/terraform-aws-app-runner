@@ -62,7 +62,7 @@ resource "aws_apprunner_service" "this" {
 
     content {
       cpu               = try(instance_configuration.value.cpu, null)
-      instance_role_arn = lookup(instance_configuration.value, "instance_role_arn", null)
+      instance_role_arn = local.create_instance_iam_role ? lookup(instance_configuration.value, "instance_role_arn", null) : local.instance_iam_role_arn
       memory            = try(instance_configuration.value.memory, null)
     }
   }
@@ -281,6 +281,7 @@ resource "aws_iam_role_policy_attachment" "access_additional" {
 locals {
   create_instance_iam_role = local.create_service && var.create_instance_iam_role
   instance_iam_role_name   = try(coalesce(var.instance_iam_role_name, "${var.service_name}-instance"), "")
+  instance_iam_role_arn    = var.instance_iam_role_arn
 }
 
 data "aws_iam_policy_document" "instance_assume_role" {

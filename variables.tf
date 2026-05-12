@@ -130,6 +130,12 @@ variable "create_instance_iam_role" {
   default     = true
 }
 
+variable "instance_iam_role_arn" {
+  description = "ARN of IAM role to used (re)used as intance role"
+  type        = string
+  default     = null
+}
+
 variable "instance_iam_role_name" {
   description = "Name to use on IAM role created"
   type        = string
